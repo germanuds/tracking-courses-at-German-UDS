@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7f9fc;
+    padding: 24px;
+    color: #000064;
+  }
+
+  label {
+    font-weight: 700;
+    font-size: 1.3rem;
+  }
+
+  select {
+    margin: 12px 0 24px 0;
+    padding: 8px 12px;
+    font-size: 1.05rem;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #000064;
+  }
+
+  /* Program block */
+  .program-tracker {
+    display: none;
+  }
+
+  .program-tracker h2 {
+    border-left: 6px solid #82b4fa;
+    padding-left: 14px;
+    font-size: 1.85rem;
+    margin-bottom: 16px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.98rem;
+  }
+
+  th {
+    background: #000064;
+    color: #ffffff;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #82b4fa;
+  }
+
+  td {
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+
+  .module-name {
+    font-weight: 600;
+  }
+
+  /* ======================
+     EDUCATOR (CLICKABLE)
+     ====================== */
+  .educator-name {
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .educator-info {
+    display: none;
+    margin-top: 6px;
+    padding: 6px 8px;
+    background: #f7f9ff;
+    border-left: 3px solid #82b4fa;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  /* Copy-friendly email */
+  .copy-email {
+    display: inline-block;
+    padding: 4px 6px;
+    margin-top: 4px;
+    background: #ffffff;
+    border: 1px solid #d2d9e8;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    user-select: all;   /* ✅ click once to select */
+    cursor: text;
+  }
+
+  /* Course run */
+  .run-select {
+    padding: 4px 6px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #d2d9e8;
+  }
+
+  /* ======================
+     STATUS DROPDOWN
+     ====================== */
+  .status-select {
+    padding: 6px 10px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+
+  .completed {
+    background: #ff8b00;
+    color: #ffffff;
+    border-color: #ff8b00;
+  }
+
+  .ongoing {
+    background: #fff4cc;
+    border-color: #e0c36a;
+  }
+
+  .planning {
+    background: #e6f7ff;
+    border-color: #9fcde6;
+  }
+
+  .pending {
+    background: #e6e6e6;
+    color: #7a7a7a;
+    border: 2px dashed #b5b5b5;
+  }
+
+  /* Timeline */
+  .timeline-dot {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #e6e6e6;
+  }
+</style>
+</head>
+
+<body>
+
+<label for="programSelect">Select program:</label><br>
+<select id="programSelect" onchange="filterByProgram()">
+  <option value="">— please choose —</option>
+  <option value="adr">M.Sc. Advanced Digital Reality</option>
+  <option value="aai">M.Sc. Applied AI </option>
+  <option value="cbs">M.Sc. Cybersecurity</option>
+  <option value="dl">M.Sc. Digital Leadership</option>
+  <option value="dt">MBA Digital Technologies </option>
+  <option value="dtr">MBA Digital Transformation </option>
+</select>
+
+<div id="program-adr" class="program-tracker">
+<h2>M.Sc. Advanced Digital Reality: Course Update Tracker</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Type</th>
+      <th>No.</th>
+      <th>Educator</th>
+      <th>Course Run</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Status</th>
+      <th>Timeline</th>
+    </tr>
+  </thead>
+
+  <tbody>
+<!-- ✅ Course 1 -->
+    <tr>
+      <td class="module-name">Data Analytics and Decision Making</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Prof. Dr. Katya Artemova
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">katya.artemova@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+    </tr>
+<!-- ✅ Course 2 -->
+<tr>
+<td class="module-name">Machine Learning and Analytics</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Prof. Dr. Felix Weitkämper
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">felix.weitkaemper@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+    </tr>
+
+<!-- ✅ Course 3 -->
+<tr>
+<td class="module-name">Computer Forensics</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Prof. Dr. Reiner Creutzburg
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">reiner.creutzburg@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+    </tr>
+
+
+  </tbody>
+</table>
+</div>
+
+<script>
+function filterByProgram() {
+  document.getElementById("program-adr").style.display =
+    document.getElementById("programSelect").value === "adr" ? "block" : "none";
+}
+
+function updateStatus(select) {
+  select.classList.remove("completed","ongoing","planning","pending");
+  if (select.value === "Completed") select.classList.add("completed");
+  if (select.value === "Ongoing") select.classList.add("ongoing");
+  if (select.value === "Planning") select.classList.add("planning");
+  if (select.value === "Planned (Pending Approval)") select.classList.add("pending");
+}
+
+function toggleEducator(element) {
+  const box = element.nextElementSibling;
+  box.style.display = box.style.display === "block" ? "none" : "block";
+}
+</script>
+
+</body>
+</html>
+
+<div id="program-aai" class="program-tracker">
+<h2>M.Sc. Applied AI: Course Update Tracker</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Type</th>
+      <th>No.</th>
+      <th>Educator</th>
+      <th>Course Run</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Status</th>
+      <th>Timeline</th>
+    </tr>
+  </thead>
+
+  <tbody>
+<!-- ✅ Course 1 -->
+    <tr>
+      <td class="module-name">Data Analytics and Decision Making</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Prof. Dr. Katya Artemova
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">katya.artemova@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+</tr>
+<!-- ✅ Course 2 -->
+<tr>
+<td class="module-name">Systems & Network Security</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Dr. Pejman Najafi
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">pejman.najafi@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+
+    </tr>
+<!-- ✅ Course 3 -->
+<tr>
+<td class="module-name">Digital Business Models & Venture Building</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Prof. Dr. Georg Loscher
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">georg.loscher@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+
+    </tr>
+<!-- ✅ Course 4 -->
+<tr>
+<td class="module-name">Large Language Models</td>
+      <td>E</td>
+      <td>5</td>
+      <td>
+        <span class="educator-name" onclick="toggleEducator(this)">
+          Prof. Dr. Katya Artemova
+        </span>
+        <div class="educator-info">
+          <strong>Email:</strong><br>
+          <code class="copy-email">ekaterina.artemova@german-uds.de</code>
+        </div>
+      </td>
+      <td>
+        <select class="run-select">
+          <option selected>2026_Q1</option><option>2026_Q2</option><option>2026_Q3</option><option>2026_Q4</option>
+          <option>2027_Q1</option><option>2027_Q2</option><option>2027_Q3</option><option>2027_Q4</option>
+          <option>2028_Q1</option><option>2028_Q2</option><option>2028_Q3</option><option>2028_Q4</option>
+        </select>
+      </td>
+      <td>21 Jan 26</td>
+      <td>04 Feb 26</td>
+      <td>
+        <select class="status-select completed" onchange="updateStatus(this)">
+          <option selected>Completed</option>
+          <option>Ongoing</option>
+          <option>Planning</option>
+          <option>Planned (Pending Approval)</option>
+        </select>
+      </td>
+      <td><span class="timeline-dot">Jan 26</span></td>
+
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<script>
+function filterByProgram() {
+  const selected = document.getElementById("programSelect").value;
+
+  // Hide all program sections
+  document.querySelectorAll(".program-tracker").forEach(el => {
+    el.style.display = "none";
+  });
+
+  // Show the selected program
+  if (selected) {
+    const target = document.getElementById("program-" + selected);
+    if (target) {
+      target.style.display = "block";
+    }
+  }
+}
+</script>
+
+</body>
+</html>
+
+
